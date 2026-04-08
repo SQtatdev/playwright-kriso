@@ -1,6 +1,6 @@
 /**
  * Part II — Page Object Model tests
- * Test suite: Search for Books by Keywords
+ * Test suite: Add Books to Shopping Cart
  *
  * Rules:
  *   - No raw selectors in test files — all locators live in page classes
@@ -41,7 +41,7 @@ test.describe('Add Books to Shopping Cart (POM)', () => {
 
   test('Test search by keyword', async () => {
     await homePage.searchByKeyword('harry potter');
-    await homePage.verifyResultsCountMoreThan(1)
+    await homePage.verifyResultsCountMoreThan(1);
   }); 
 
   test('Test add book to cart', async () => {
@@ -60,10 +60,9 @@ test.describe('Add Books to Shopping Cart (POM)', () => {
   test('Test cart count and sum is correct', async () => {
     cartPage = await homePage.openShoppingCart();
     await cartPage.verifyCartCount(2);
-    
+
     basketSumOfTwo = await cartPage.verifyCartSumIsCorrect();
   }); 
-
 
   test('Test remove item from cart and counter sum is correct', async () => {
     await cartPage.removeItemByIndex(0);
@@ -74,5 +73,4 @@ test.describe('Add Books to Shopping Cart (POM)', () => {
     expect(basketSumOfOne).toBeLessThan(basketSumOfTwo);
   });
 
-}); 
-
+});
