@@ -1,62 +1,54 @@
 import { Page, Locator, expect } from '@playwright/test';
+import { BasePage } from './BasePage';
 import { CartPage } from './CartPage';
 
-const homePageUrl = 'https://www.kriso.ee/';
-const logoSelector = '.logo-icon';
+export class HomePage extends BasePage {
+  private readonly url = 'https://www.kriso.ee/';
+  private readonly resultsTotal: Locator;
+  private readonly addToCartLink: Locator;
+  private readonly addToCartMessage: Locator;
+  private readonly cartCount: Locator;
+  private readonly backButton: Locator;
+  private readonly forwardButton: Locator;
 
-export class HomePage {
-
-  private readonly logo: Locator;
-  private readonly consentButton: Locator;
-
-  constructor(private page: Page) {
-    this.logo = this.page.locator(logoSelector);
-    this.consentButton = this.page.getByRole('button', { name: 'Nõustun' });
+  constructor(page: Page) {
+    super(page);
+    this.resultsTotal = this.page.locator('.sb-results-total');
+    this.addToCartLink = this.page.getByRole('link', { name: 'Lisa ostukorvi' });
+    this.addToCartMessage = this.page.locator('.item-messagebox');
+    this.cartCount = this.page.locator('.cart-products');
+    this.backButton = this.page.locator('.cartbtn-event.back');
+    this.forwardButton = this.page.locator('.cartbtn-event.forward');
   }
 
   async openUrl() {
-    await this.page.goto(homePageUrl);
-  }
-
-  async acceptCookies() {
-    await this.consentButton.click();
-  }
-
-  async verifyLogo() {
-    await expect(this.logo).toBeVisible();
-  }
-
-  async searchByKeyword(keyword: string) {
-    await this.page.getByRole('textbox', { name: 'Pealkiri, autor, ISBN, märksõ' }).click();
-    await this.page.getByRole('textbox', { name: 'Pealkiri, autor, ISBN, märksõ' }).fill(keyword);
-    await this.page.getByRole('button', { name: 'Search' }).click();
+    await this.page.goto(this.url);
   }
 
   async verifyResultsCountMoreThan(minCount: number) {
-    const resultsText = await this.page.locator('.sb-results-total').textContent();
+    const resultsText = await this.resultsTotal.textContent();
     const total = Number((resultsText || '').replace(/\D/g, '')) || 0;
     expect(total).toBeGreaterThan(minCount);
   }
 
   async addToCartByIndex(index: number) {
-    await this.page.getByRole('link', { name: 'Lisa ostukorvi' }).nth(index).click();
+    await this.addToCartLink.nth(index).click();
   }
 
   async verifyAddToCartMessage() {
-    await expect(this.page.locator('.item-messagebox')).toContainText('Toode lisati ostukorvi');
+    await expect(this.addToCartMessage).toContainText('Toode lisati ostukorvi');
   }
 
   async verifyCartCount(expectedCount: number) {
-    await expect(this.page.locator('.cart-products')).toContainText(expectedCount.toString());
+    await expect(this.cartCount).toContainText(expectedCount.toString());
   }
 
   async goBackFromCart() {
-    await this.page.locator('.cartbtn-event.back').click();
+    await this.backButton.click();
   }
 
   async openShoppingCart() {
-    await this.page.locator('.cartbtn-event.forward').click();
+    await this.forwardButton.click();
     return new CartPage(this.page);
   }
-
 }
