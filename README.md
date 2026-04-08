@@ -94,12 +94,10 @@ npx playwright show-report
 | Steps | Expected Result (Assertions) |
 |-------|------------------------------|
 | Open https://www.kriso.ee | Confirm the page has a Kriso title/logo |
-| Search for keyword "harry potter" | Confirm multiple products are shown |
+| Search for keyword "xqzwmfkj" | Confirm no products are shown |
+| Search for keyword "tolkien" | Confirm multiple products are shown |
 | | All listed items contain the searched keyword in their title or description |
-| | Products can be sorted |
-| Sort results by price | Verify products are sorted in the expected order (e.g., low to high or high to low) |
-| Filter by language (e.g., English) | Verify only products in that language appear |
-| Filter by format (e.g., "Kõvakaaneline" / hardback) | Confirm fewer items are listed and all match the selected format |
+| Search for book by ISBN "9780307588371" | Confirm correct book "Gone Girl" is shown |
 
 #### Add Books to Shopping Cart
 
@@ -123,12 +121,13 @@ npx playwright show-report
 |-------|------------------------------|
 | Open https://www.kriso.ee | Confirm the page has a Kriso title/logo |
 | Scroll down to find a section like "Muusikaraamatud ja noodid" | Confirm the section is visible |
-| Click the "Õppematerjalid" category | Verify that there are more than 1 products found |
+| Click the "Kitarr" category | Verify that there are more than 1 products found |
 | | Confirm URL or page title reflects navigation correctly |
-| Click on a category ("Bänd ja ansambel") | Confirm active filters show the selected category |
+| Filter by language (e.g., English) | Confirm filter is applied  |
 | | Verify products list now contains less items |
 | Click on a format category ("CD") | Confirm active filters show the selected category |
 | | Verify products list now contains less items |
+| Remove the active filters | Confirm results item count goes up |
 
 ---
 

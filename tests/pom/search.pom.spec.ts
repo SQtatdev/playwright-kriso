@@ -9,6 +9,7 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { HomePage } from '../../pages/HomePage';
+ main
 import { SearchPage } from '../../pages/SearchPage';
 
 test.describe.configure({ mode: 'serial' });
@@ -17,9 +18,15 @@ let page: Page;
 let homePage: HomePage;
 let searchPage: SearchPage;
 
+
+let page: Page;
+let homePage: HomePage;
+ main
+
 test.describe('Search for Books by Keywords (POM)', () => {
 
   test.beforeAll(async ({ browser }) => {
+main
     const context = await browser.newContext();
     page = await context.newPage();
 
@@ -75,5 +82,23 @@ test.describe('Search for Books by Keywords (POM)', () => {
     expect(totalAfter).toBeLessThanOrEqual(totalBefore);
     expect(totalAfter).toBeGreaterThan(0);
   });
+
+      const context = await browser.newContext();
+      page = await context.newPage();
+  
+      homePage = new HomePage(page);
+  
+      await homePage.openUrl();
+      await homePage.acceptCookies();
+    });
+  
+    test.afterAll(async () => {
+      await page.context().close();
+    });
+  
+    test('Test logo is visible', async () => {
+      await homePage.verifyLogo();
+    }); 
+ main
 
 });
